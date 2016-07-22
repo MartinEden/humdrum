@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    cursor: default;
+}
+a {
+    cursor: pointer;
+}
+.repository .label {
+    font-size: 20pt;
+}
+.repository .uri {
+    fill: rgb(150, 150, 150);
+    font-size: 10pt;
+}
+.lane-divider {
+    stroke-width: 1px;
+    stroke: rgb(200, 200, 200);
+    stroke-dasharray: 5,10;
+}
+.repository .activity circle {
+    fill: rgb(150, 150, 150);
+}
+.repository .activity text {
+    fill: white;
+}
+.repository .commit circle {
+    fill: rgb(0, 87, 186);
+    stroke: rgb(180, 180, 180);
+    stroke-width: 2px;
+    transform-origin: 50% 50%;
+    transition: transform 0.25s;
+}
+.repository .commit .count {
+    fill: white;
+    text-anchor: middle;
+}
+.repository .commit .contributor text {
+    fill: white;
+    text-anchor: middle;
+    font-size: 10pt;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.repository .commit .contributor text {
+    fill: white;
+    text-anchor: middle;
+    font-size: 10pt;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.repository .commit:hover .contributor text {
+    opacity: 1;
+}
+.repository .commit circle.temporary {
+    fill: rgb(0, 87, 186);
+    stroke: rgb(180, 180, 180);
+    stroke-width: 2px;
+    transform: scale(0, 0);
+}
+.repository .commit:hover circle.temporary {
+    transform: scale(1, 1);
+}
+
+line.day {
+    stroke: rgb(200, 200, 200);
+    stroke-width: 1px;
+    stroke-dasharray: 5,10;
+}
+text.day {
+    text-anchor: middle;
+    fill: rgb(150, 150, 150);
+}
