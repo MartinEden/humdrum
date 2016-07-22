@@ -1,18 +1,24 @@
+import datetime
+from dateutil import parser
 import requests
-import urllib3
 
-urllib3.disable_warnings()
+from utc import utc
 
 
 def get_repos(team_name):
     uri = 'http://api.bitbucket.org/2.0/repositories/' + team_name
+    now = datetime.datetime.now(utc)
+    limit = now - datetime.timedelta(days=7)
+
     while uri:
         r = requests.get(uri)
         data = r.json()
         for repo in data['values']:
-            for handle in repo['links']['clone']:
-                if handle['name'] == 'ssh':
-                    yield handle['href']
+            last_updated = parser.parse(repo['updated_on'])
+            if last_updated >= limit:
+                for handle in repo['links']['clone']:
+                    if handle['name'] == 'ssh':
+                        yield handle['href']
 
         if 'next' in data:
             uri = data['next']
