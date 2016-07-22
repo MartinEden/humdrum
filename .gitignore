@@ -1,0 +1,8 @@
+repos/*
+data/*
+secrets.py
+.idea/*
+*.pyc
+
+repos.txt
+status.json

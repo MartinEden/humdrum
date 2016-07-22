@@ -1,0 +1,4 @@
+gitpython
+dateutils
+beautifulsoup4
+requests
