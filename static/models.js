@@ -101,6 +101,13 @@ function RepositoryStatusModel(data, index, width, days, laneHeight) {
     });
     this.translation = ko.computed(function () {
        return "translate(0, " + me.y() + ")";
+    });    
+    this.activity = ko.computed(function() {
+        var x = 0;
+        me.days().forEach(function(day) {
+            x += day.count();
+        });
+        return x;
     });
 }
 function CommitModel(data, width) {
