@@ -14,7 +14,7 @@ def get_repos(org):
     while uri:
         r = requests.get(uri)
         for repo in r.json():
-            last_updated = parser.parse(repo['updated_at'])
+            last_updated = parser.parse(repo['pushed_at'])
             if last_updated >= limit:
                 yield repo['ssh_url']  
 
