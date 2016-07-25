@@ -2,6 +2,7 @@ import datetime
 from dateutil import parser
 import requests
 
+from secrets import bitbucket_credentials
 from utc import utc
 
 
@@ -11,10 +12,11 @@ def get_repos(team_name):
     limit = now - datetime.timedelta(days=7)
 
     while uri:
-        r = requests.get(uri)
+        r = requests.get(uri, auth=bitbucket_credentials)
         data = r.json()
         for repo in data['values']:
             last_updated = parser.parse(repo['updated_on'])
+            # print repo['name'], ':', last_updated
             if last_updated >= limit:
                 for handle in repo['links']['clone']:
                     if handle['name'] == 'ssh':
