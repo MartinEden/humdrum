@@ -1,6 +1,21 @@
 var oneDayMs = 1000 * 3600 * 24;
 var maxAge = 7 * oneDayMs;
 
+var colors = [
+    "rgb(  0,  87, 186)",
+    //"rgb(  6,   0, 186)",
+    "rgb( 99,   0, 186)",
+    //"rgb(186,   0, 180)",
+    "rgb(186,   0,  87)",
+    //"rgb(186,   6,   0)",
+    "rgb(186,  99,   0)",
+    //"rgb(180, 186,   0)",
+    "rgb( 87, 186,   0)",
+    //"rgb(  0, 186,   6)",
+    "rgb(  0, 186,  99)",
+    //"rgb(  0, 180, 186)",
+];
+
 function StatusModel(data, width, days, laneHeight) {
     var me = this;
     this.repos = ko.observableArray();
@@ -14,20 +29,24 @@ function StatusModel(data, width, days, laneHeight) {
     });
 }
 
-function DayModel(data) {
+function DayModel(data, fillColor) {
     var me = this;
     this.name = data.name;
     this.start = Date.parse(data.value);
     this.end = this.start + oneDayMs;
     this.commits = ko.observableArray();
     this.x = data.centre_x;
+    this.fillColor = ko.observable(fillColor);
 
     this.radius = ko.computed(function () {
         return Math.sqrt(me.commits().length * 100);
     });
     this.count = ko.computed(function () {
-        if (me.commits().length > 1) {
-            return me.commits().length;
+        return me.commits().length;
+    });
+    this.countString = ko.computed(function() {
+        if (me.count() > 1) {
+            return me.count();
         }
         return "";
     });
@@ -62,11 +81,10 @@ function RepositoryStatusModel(data, index, width, days, laneHeight) {
     this.index = ko.observable(index);
     this.uri = ko.observable(data.uri);
     this.name = ko.observable(data.name);
-    this.activity = ko.observable(data.activity);
     this.latest = data.latest;
     this.days = ko.observableArray();
     days.forEach(function (day) {
-        me.days.push(new DayModel(day));
+        me.days.push(new DayModel(day, colors[index % colors.length]));
     });
 
     this.commits = ko.observableArray();

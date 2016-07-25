@@ -42,9 +42,9 @@
 
                 <g class="commits" data-bind="foreach: days" transform="translate(0, 50)">                    
                     <g class="commit">
-                        <circle data-bind="attr: { cx: x, r: radius }"></circle>
                         <text class="count" y="5" data-bind="text: count, attr: { x: x }"></text>
-                        <circle class="temporary" data-bind="attr: { cx: x }" r="80"></circle>
+                        <circle data-bind="attr: { cx: x, r: radius, fill: fillColor }"></circle>
+                        <circle class="temporary" data-bind="attr: { cx: x, fill: fillColor }" r="80"></circle>
                         <g class="contributor" data-bind="foreach: contributors">
                             <text data-bind="text: name, attr: { x: x, y: y }"></text>
                         </g>
