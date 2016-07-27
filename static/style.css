@@ -6,6 +6,63 @@ body {
 a {
     cursor: pointer;
 }
+
+header {
+    background: url("/static/asanoha.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 29px;
+    border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+header .tools {
+    position: absolute;
+    top: -1px;
+    right: 10px;
+}
+
+header .tools .cog {
+    transform-origin: 14.5px 14.8px;
+    transition: transform 0.25s;
+    cursor: pointer;
+}
+
+header .tools .cog:hover {
+    transform: rotate(45deg);
+}
+
+header .title {
+    font-weight: 800;
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    right: 50%;
+}
+header .title .hum {
+    color: rgb(0, 87, 186);
+}
+header .title .drum {
+    color: rgb(87, 186, 0);
+}
+
+#overlay {
+    background: url("/static/congruent_outline.png") black;
+    display: none;
+    opacity: 0.75;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+svg#canvas {
+    position: absolute;
+    top: 29px;
+}
+
 .repository .label {
     font-size: 20pt;
 }

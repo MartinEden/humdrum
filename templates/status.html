@@ -2,24 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LShift repository monitor</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <title>Humdrum</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/settings.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='knockout-3.4.0.js') }}"></script>
     <script src="{{ url_for('static', filename='models.js') }}"></script>
     <script>
         var laneHeight = 150;
         $(function () {
-            $.ajax("/status", {
+            $.ajax("/json", {
                 success: function (data) {
-                    ko.applyBindings(new StatusModel(data.status, data.width, data.days, laneHeight));
+                    ko.applyBindings(new PageModel(data));
                 },
+            });
+            $("header .tools .cog").click(function () {
+                $('#overlay').fadeIn();
+                $('#settings').fadeIn();
+            });
+            $("#settings .close").click(function () {
+                $('#overlay').fadeOut();
+                $('#settings').fadeOut();
             });
         });
     </script>
 </head>
 <body>
-    <svg id="canvas" width="{{ width }}" height="20000">
+    <header>
+        <div class="tools">
+            <img class="cog" src="{{ url_for('static', filename='gear.svg') }}" height="28" />
+        </div>
+        <div class="title">
+            <span class="hum">Hum</span><span class="drum">drum</span>
+        </div>
+    </header>
+
+    <svg id="canvas" width="{{ width }}" height="20000" data-bind="with: status">
         <g class="day-lines" transform="translate(1, 0)">
             {% for day in days %}
                 <text class="day" x="{{ day.centre_x }}" y="25">{{ day.name }}</text>
@@ -53,5 +71,31 @@
             </g>
         </g>
     </svg>
+
+    <div id="overlay"></div>
+    <div id="settings" data-bind="with: settings">
+        <div class="window-header">
+            Settings
+            <img class="close button" src="static/close.svg" height="16" />
+        </div>
+        <div class="content">
+            <h3>Repositories</h3>
+            <div data-bind="foreach: repos">
+                <div class="repo">
+                    <div data-bind="text: url"></div>
+                    <div class="buttons">
+                        <button data-bind="click: remove">
+                            <img class="button" src="static/close.svg" height="16" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <form id="add_repo" class="repo" action="/settings/repo/add" method="post">
+                <div>Add a new Git or Mercurial SSH url</div>
+                <div><input name="repo" type="text" /></div>
+                <button><img class="button" src="static/add.svg" height="20"/></button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

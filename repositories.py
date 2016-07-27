@@ -9,7 +9,7 @@ import mercurial_server
 from commit import Commit
 import git_helper
 import hg_helper
-from utc import utc
+from settings import settings
 
 
 class RepositoryStatus(object):
@@ -54,8 +54,8 @@ class RepositoryMonitor(object):
             try:
                 print 'Checking %s' % repo
                 yield self.get_repo_status(repo)
-            except Exception:
-                print "Error checking %s" % repo
+            except Exception as err:
+                print "Error checking %s. %s" % (repo, err)
 
     @classmethod
     def get_repo_helper(cls, uri):
@@ -102,10 +102,7 @@ class TotalStatus(object):
     @classmethod
     def fetch(cls):
         monitor = RepositoryMonitor()
-        repos = []
-        if os.path.exists('repos.txt'):
-            with open('repos.txt', 'r') as f:
-                repos += f.readlines()
+        repos = settings.all_repos()
         repos += github_helper.get_repos("lshift")
         repos += bitbucket_helper.get_repos("lshift")
         repos += mercurial_server.get_repos("http://hg.lshift.net")

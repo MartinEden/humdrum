@@ -1,8 +1,8 @@
 import datetime
 from os.path import join
-from urlparse import urlparse
 
 from file_helpers import to_filename
+from settings import settings
 
 
 # 'Abstract' class
@@ -10,7 +10,7 @@ class RepoHelper(object):
     def __init__(self, uri):
         self.uri = uri
         self.filename = to_filename(self.uri)
-        self.local_path = join('repos', self.filename)
+        self.local_path = join(settings.data['data_path'], self.filename)
         self.repo = 'Call setup first'
         self.remote = 'Call setup first'
 

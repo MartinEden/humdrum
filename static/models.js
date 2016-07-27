@@ -16,6 +16,44 @@ var colors = [
     //"rgb(  0, 180, 186)",
 ];
 
+function PageModel(data) {
+    this.status = new StatusModel(data.status, data.width, data.days, laneHeight);
+    this.settings = new SettingsModel(data.settings);
+}
+
+function SettingsModel(data) {
+    var me = this;
+    this.repos = ko.observableArray();
+    data.repos.forEach(function (url) {
+        me.repos.push(new RepositorySettingsModel(url, me));
+    });
+    $("form#add_repo").submit(function (e) {
+        e.preventDefault();
+        var f = $(this);
+        var url = f.find("input[name=repo]").val();
+        $.post({
+            url: f.attr("action"),
+            data: f.serialize(),
+            success: function () {
+                me.repos.push(new RepositorySettingsModel(url, me));
+            }
+        });
+    });
+}
+function RepositorySettingsModel(url, owner) {
+    var me = this;
+    this.url = ko.observable(url);
+    this.remove = function () {
+        $.post({
+            url: '/settings/repo/remove',
+            data: { repo: url },
+            success: function () {
+                owner.repos.remove(me);
+            }
+        });
+    }
+}
+
 function StatusModel(data, width, days, laneHeight) {
     var me = this;
     this.repos = ko.observableArray();
