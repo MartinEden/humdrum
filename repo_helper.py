@@ -29,7 +29,8 @@ class RepoHelper(object):
         pass
 
     def _end_date(self):
-        return datetime.date.today()
+        # Return the end of today
+        return datetime.date.today() + datetime.timedelta(days=1)
 
     def _start_date(self):
         return self._end_date() - datetime.timedelta(days=7)
