@@ -9,7 +9,6 @@
     <script src="{{ url_for('static', filename='knockout-3.4.0.js') }}"></script>
     <script src="{{ url_for('static', filename='models.js') }}"></script>
     <script>
-        var laneHeight = 150;
         $(function () {
             $.ajax("/json", {
                 success: function (data) {
@@ -38,27 +37,32 @@
     </header>
 
     <svg id="canvas" width="{{ width }}" height="20000" data-bind="with: status">
-        <g class="day-lines" transform="translate(1, 0)">
+        <g class="day-lines" transform="translate(250, 0)">
             {% for day in days %}
                 <text class="day" x="{{ day.centre_x }}" y="25">{{ day.name }}</text>
                 <line class="day" x1="{{ day.x }}" y1="0" x2="{{ day.x }}" y2="2000"></line>
             {% endfor %}
         </g>
-        <line class="lane-divider" x1="0" x2="{{ width }}" y1="45" y2="45"></line>
-        <g class="status" data-bind="foreach: repos" transform="translate(0, 80)">
-            <g class="repository" data-bind="attr: { transform: translation }">
-                <line class="lane-divider" x1="0" x2="{{ width }}" y1="120" y2="120"></line>
 
-                <a data-bind="attr: { href: uri }">
-                    <text class="label" data-bind="text: name" transform="translate(40, 0)"></text>
-                    <text class="uri" data-bind="text: uri" transform="translate(10, 20)"></text>
-                </a>
-                <g class="activity" transform="translate(20, 2)">
-                    <circle r="14" transform="translate(0, -10)"></circle>
-                    <text text-anchor="middle" data-bind="text: activity" transform="translate(0, -4)"></text>
+        <line class="lane-divider" x1="0" x2="{{ width }}" y1="45" y2="45"></line>
+        <g data-bind="foreach: repos" transform="translate(0, 45)">
+            <line class="lane-divider" x1="0" x2="{{ width }}" y1="0" y2="0" data-bind="attr: { transform: translation }"></line>
+        </g>
+
+        <g class="status" data-bind="foreach: repos" transform="translate(0, 45)">
+            <g class="repository" data-bind="attr: { transform: translation }">
+                <g class="metadata" transform="translate(0, 30)">
+                    <a data-bind="attr: { href: uri }">
+                        <text class="label" data-bind="text: name" transform="translate(40, 0)"></text>
+                        <text class="uri" data-bind="text: uri" transform="translate(10, 20)"></text>
+                    </a>
+                    <g class="activity" transform="translate(20, 2)">
+                        <circle r="14" transform="translate(0, -10)"></circle>
+                        <text text-anchor="middle" data-bind="text: activity" transform="translate(0, -4)"></text>
+                    </g>
                 </g>
 
-                <g class="commits" data-bind="foreach: days" transform="translate(0, 50)">                    
+                <g class="commits" data-bind="foreach: days" transform="translate(250, 50)">
                     <g class="commit">
                         <circle data-bind="attr: { cx: x, r: radius, fill: fillColor }"></circle>
                         <text class="count" y="5" data-bind="text: countString, attr: { x: x }"></text>

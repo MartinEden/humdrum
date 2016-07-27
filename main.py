@@ -7,7 +7,9 @@ from settings import settings
 app = flask.Flask(__name__)
 app.config['DEBUG'] = True
 
-width = 1000
+width = 1250
+leftMargin = 250
+laneHeight = 100
 
 
 def get_days():
@@ -15,7 +17,7 @@ def get_days():
     day = today - datetime.timedelta(days=6)
     days = []
     x = 0
-    column_width = width / 7
+    column_width = (width - leftMargin) / 7
     while day <= today:
         days.append({
             "name": day.strftime('%A'),
@@ -34,7 +36,8 @@ def json():
         'settings': settings.data,
         'status': TotalStatus.load_from_disk(),
         'days': get_days(),
-        'width': width
+        'width': width,
+        'laneHeight': laneHeight,
     }
     return flask.json.jsonify(data)
 

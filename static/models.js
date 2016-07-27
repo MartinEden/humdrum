@@ -17,8 +17,10 @@ var colors = [
 ];
 
 function PageModel(data) {
-    this.status = new StatusModel(data.status, data.width, data.days, laneHeight);
+    this.status = new StatusModel(data.status, data.width, data.days, data.laneHeight);
     this.settings = new SettingsModel(data.settings);
+
+    $("#canvas").attr("height", data.laneHeight * this.status.repos().length + 45);
 }
 
 function SettingsModel(data) {
